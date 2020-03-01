@@ -107,30 +107,48 @@ Q: 列出下列类型操作系统的基本特点
 * Program: passive entity stored on disk(executable file)
 #### 习题
 1. The Difference between short-term scheduler, medium-term scheduler, long-term scheduler.
-* short-term scheduler: also called CPU scheduler, select which process should be executed next and allocate CPU invoked very frequently
-* medium-term scheduler: 
-* long-term scheduler:also called job scheduler, select which 
-3. Use C language and fork() to generate Fibonacci sequence
-#include<Stdio.h>
-#include<Unisex.h>
-#inlcude<Sys/wait.h>
-Int main(){
+* short-term scheduler
+  * also called CPU scheduler
+  * select which process should be executed next and allocate CPU 
+  * invoked very frequently
+* medium-term scheduler
+  * used especially with time-sharing systems as an intermediate scheduling level. 
+  * A swapping scheme is implemented to remove partially run programs from memory and reinstate them later to continue where they left off.
+* long-term scheduler
+  * also called job scheduler
+  * select which processes should be brought into the ready queue
+  * invoked infrequently
+
+2. Use C language and fork() to generate Fibonacci sequence
+
+```c++
+#include<stdio.h>
+#include<unistd.h>
+#include<sys/wait.h>
+int main(){
 	pid_t pid;
-	Int fib0=0,fib1=1,i=1;
+	int fib0=0,fib1=1,i=1;
 	unsigned int num;
 	scanf(“%d”,&num);
 	pid=fork();
-	if(pid==0){ //subprocess
+	if(pid==0){ 	//subprocess
 		if(num<=0) printf(“uncorrect num inputed”);
 		if(num==1) printf(“%d”,fib0);
 		if(num==2) printf(“%d”,fib1);
-			while(i<num)
+        while(i<num){
+            ... //有点不对，我找找答案
+        }
 	}else if(pid==-1){
 		printf(“generate subprocess unsuccess\n”);
+        return 0;
 	}else{
 		Wait(NULL);
+        return 0;
 	}
-}
+}	
+```
+
+
 
 ### 内存管理
 #### 基本概念
@@ -240,21 +258,11 @@ OSC + LKD《操作系统概念》第九版 (Operating System Concept， OSC）�
 
 #### 第三阶段 强化，总结与展望
 
-## 第四章 BlockChain
-
-感觉区块链可以发展出一个真正分布式的操作系统|数据库，一个利用网络管理众多I/O设备，CPU，文件的管理系统。
-
-共识：中文的数据质量太差。
-
-​	中文的语言腐败不仅阻碍了反腐，真相，并且在根本上抑制了中华民族的崛起，人类诞生以来的1001项改变进程的发明中，中国在1500年后就一项都没有了。而创新力是与自由，版权保护完全正相关的。（张维迎教授谈语言腐败：https://www.youtube.com/watch?v=G_eHivAe9jk） 令人伤心的是，本来互联网上就存在了过多的垃圾信息，而中文更是在制造垃圾信息上问鼎世界。  我们应该多做减熵的工作。
-
-原因：所有的数据，文章都需要为政府的意识形态服务。比如搜索M2/GDP比例，中文的数据，文章还停留在2015年，而这一比例是衡量宏观经济与物价的关键指标，经济学者却只能通过查阅英文网站来获得数据。
-
-解决方案：用区块链建立一个分布式的数据库，保护中文数据的自由与发展。
 
 
 
 
 
-## 第五章 STL
+
+## 第四章 STL
 
