@@ -33,7 +33,7 @@ Resource: Component of limited availability necessary for effective operation
 模式位（mode bit）：表示当前模式的方式。监督模式（0），用户模式（1）
 
 System call: Method used by a process to request an action by the OS
-* Proces control
+* Process control
 * File management
 * Device management
 * Information maintenance
@@ -87,16 +87,17 @@ Q: 列出下列类型操作系统的基本特点
 * 手持：内存少，处理器速度慢
 
 ### 进程管理
-#### 基本概念
-* Process: Active program
+#### 进程
+
+* Process: Active program，系统进程资源分配和调度的独立单位
 * Kernel: contains basic  function (one process active all the time)
 * Process Control Block(PCB)
 	* A Data structure created by the OS for each process, with:
 		* process state: 
 			* new
-			* ready
-			* running
-			* waiting
+			* ready：进程已分配到除CPU以外的所有资源
+			* running：程序正在执行
+			* waiting：正在执行的进程由于发生某时（如I/O请求，申请缓冲区失败等）暂时无法继续执行的状态
 			* terminated
 		* process number
 		* program counter
@@ -105,8 +106,54 @@ Q: 列出下列类型操作系统的基本特点
 		* list of open files
 		* ...
 * Program: passive entity stored on disk(executable file)
-#### 习题
-1. The Difference between short-term scheduler, medium-term scheduler, long-term scheduler.
+#### 线程
+
+thread: CPU调度和分派的基本单元
+
+分类：
+
+* user level thread: 非常高效，不需要进入内核空间，但并发效率不高
+* kernel level thread: 内核可将不同线程更好地分配到不同的CPU，以实现真正的并行计算
+
+Q: 进程与线程的区别
+A:
+
+* 进程有自己的独立地址空间， 线程没有
+* 进程是资源分配的最小单位，线程是CPU调度的最小
+* 进程和线程通信方式不同。线程通信较为方便，同一进程下的线程共享数据
+* 进程上下文切换开销大，线程开销小
+* 一个进程挂掉了不会影响其他级才能拿，而线程挂掉了会影响其他线程
+* 对进程操作开销大，对线程操作开销小
+
+Q: 进程与线程的联系
+A:
+
+* 一个线程只能属于一个级才能拿，而一个进程可以有多个线程，但至少有一个线程
+* 资源分配给进程，统一进程的所有线程共享该进程的所有资源，但是每个线程拥有自己的栈段，用来存放局部变量和临时变量
+* CPU上真正运行的是线程
+* 线程执行中需要协作同步，不同级才能拿的线程间要利用消息通信的办法实现同步。
+
+Q: 为什么进程上下文切换比线程上下文切换代价高？
+
+A:因为进程切换分两步，而线程只需做第二部。
+
+1. 切换页目录以使用新得地址空间
+2. 切换内核栈和硬件上下文
+
+Q: 页目录是什么？
+
+Q:硬件上下文是什么？
+
+Q:地址空间是什么？
+
+
+
+#### CPU调度
+
+Q: what's the Difference between short-term scheduler, medium-term scheduler, long-term scheduler?
+
+A:
+
 * short-term scheduler
   * also called CPU scheduler
   * select which process should be executed next and allocate CPU 
@@ -119,41 +166,48 @@ Q: 列出下列类型操作系统的基本特点
   * select which processes should be brought into the ready queue
   * invoked infrequently
 
-2. Use C language and fork() to generate Fibonacci sequence
+#### 进程同步
 
-```c++
-#include<stdio.h>
-#include<unistd.h>
-#include<sys/wait.h>
-int main(){
-	pid_t pid;
-	int fib0=0,fib1=1,i=1;
-	unsigned int num;
-	scanf(“%d”,&num);
-	pid=fork();
-	if(pid==0){ 	//subprocess
-		if(num<=0) printf(“uncorrect num inputed”);
-		if(num==1) printf(“%d”,fib0);
-		if(num==2) printf(“%d”,fib1);
-        while(i<num){
-            ... //有点不对，我找找答案
-        }
-	}else if(pid==-1){
-		printf(“generate subprocess unsuccess\n”);
-        return 0;
-	}else{
-		Wait(NULL);
-        return 0;
-	}
-}	
-```
+主要任务：对多个相关进程在执行次序上进行协调，以使并发执行的诸进程之间能有效地共享资源和相互合作，从而使进程的执行具有可再现性。
+
+同步机制遵循的原则 ：
+
+1. 空闲让进
+2. 忙则等待
+3. 有限等待
+4. 让权等待
+
+进程通信
+
+* 低级通信
+* 高级通信
+  * 共享存储器系统 -- 剪贴板
+  * 消息传递系统 -- ROS
+  * 管道通信系统
+
+信号量：计数器，用来控制多个进程对共享资源的访问，是一种常用的锁机制，防止多进程同时访问共享资源
+
+管道：单向，先进先出，无结构，固定大小的字节流，把一个进程的标准输出和另一个进程的标准输入连接到一起。
+
+消息队列：一个在系统内核中用来保存消息的队列，以消息链表的形式出现，克服了信号传递信息少，管道只能承载无格式字节流以及缓冲区大小受限等缺点。
+
+共享内存：
+
+Socket：一种不同机器间通信的机制
+
+Context Switch(上下文切换)：一种将CPU资源从一个进程分配给另一个进程的机制。在切换过程中，操作系统需要先存储当前进程的状态（包括内存空间的指针，当前执行完的指令等等），再读入下一个进程的状态，然后执行此级才能拿
+
+#### 死锁
+
+
 
 
 
 ### 内存管理
 #### 基本概念
 Buffer: Area of memory that stores data
-Cache: Area of fast memory that.stores copies of data
+Cache: Area of fast memory that stores copies of data
+
 * 指令寄存器（instruction register）
 * 内存（memory）/ 随机访问内存（random access memory, RAM）：可被CPU和I/O设备共同快速访问的数据仓库
 * 辅存/二级存储器（secondary storage）
