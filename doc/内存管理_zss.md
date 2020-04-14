@@ -72,13 +72,13 @@ CPU根据地址获取指令执行，这里的地址是用户程序中的地址�
 
 #### 分页存储管理的逻辑地址结构如下图所示：
 
-![page_logistic_address](C:\Document\MarkDown\操作系统\images\page_logistic_address.png)
+![page_logistic_address](./images/page_logistic_address.png)
 
 这是一个m位的逻辑地址空间，那么它所能表示的最大逻辑地址位2<sup>m</sup>字节（在以字节为寻址单元的系统中），实际上就是m位的二进制数据能够表示出多少个字节的问题。这里后n位用来表示页内偏移的大小*d*，那么页内偏移的最大值也就是页的大小2<sup>n</sup>字节，前m-n位则表示页号*p*。
 
 #### 分页存储管理内存划分
 
-![RAM_demo](.\images\RAM_demo.png)
+![RAM_demo](./images/RAM_demo.png)
 
 #### 将逻辑地址转换物理地址：
 
@@ -98,7 +98,7 @@ CPU根据地址获取指令执行，这里的地址是用户程序中的地址�
 
 ### 逻辑地址结构
 
-![二级页表](C:\Document\MarkDown\操作系统\images\二级页表逻辑地址.png)
+![二级页表](./images/二级页表逻辑地址.png)
 
 32位的二级页表的逻辑地址结构中，前10位*p*<sub>1</sub>地址用于表示相应的二级页表，*p*<sub>2</sub>中的地址表示相应页表中的页表项中保存的物理页的序号。二级页表能够检索的最大地址同样为2<sup>*p*<sub>1 </sub></sup>* 2<sup>*p*<sub>2</sub></sup> * 2<sup>*d*</sup> = 2<sup>32</sup>。
 
@@ -106,7 +106,7 @@ CPU根据地址获取指令执行，这里的地址是用户程序中的地址�
 
 #### 地址转换示意图：
 
-![二级页表寻址](C:\Document\MarkDown\操作系统\images\二级页表寻址.png)
+![二级页表寻址](./images/二级页表寻址.png)
 
 初始时只有一级页目录表在内存中，在进行地址转换时再将需要的二级页表调入内存，处理器根据寄存器中的值找到一级页目录表所在的内存页。
 
